@@ -5,5 +5,12 @@ const root = ReactDom.createRoot(document.querySelector('.app'));
 root.render(
     <div>
         <div>Hello, world</div>
+        <UserCard/>
     </div>
 );
+
+function UserCard() {
+    return <div className="card">
+        User Card
+    </div>
+}
