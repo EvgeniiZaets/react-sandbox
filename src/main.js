@@ -9,9 +9,9 @@ root.render(
     </div>
 );
 
-function UserCard(props) {
+function UserCard({ name, text }) {
     return <div className="card">
         User Card
-        <div>{props.name} {props.text}</div>
+        <div>{ name } { text }</div>
     </div>
 }
