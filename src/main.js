@@ -10,8 +10,13 @@ root.render(
 );
 
 function UserCard({ name, text }) {
-    return <div className="card">
-        User Card
-        <div>{ name } { text }</div>
-    </div>
+    return (
+        <>
+            <hr/>
+            <div className="card">
+                User Card
+                <div>{ name } { text }</div>
+            </div>
+        </>
+    );
 }
