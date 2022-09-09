@@ -2,23 +2,32 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 
 function Counter({ min, max }) {
-    let [current, setCurrent] = useState(1);
-
-    function inc() {
-        if (current < max) {
-            setCurrent(current + 1);
-        }
-    }
+    let [current, setCurrent] = useState(min);
 
     function dec() {
-        if (current > min) {
-            setCurrent(current - 1);
-        }
+        return applyCurrent(current - 1);
+    }
+
+    function inc() {
+        return applyCurrent(current + 1);
+    }
+
+    function applyCurrent(num) {
+        // if (num <= max && num >= min) {
+        //     setCurrent(num);
+        // }
+        let validNum = Math.max(min, Math.min(max, num));
+        setCurrent(validNum );
+    }
+
+    function currentChange(e) {
+        let num = parseInt(e.target.value);
+        applyCurrent(isNaN(num) ? min : num);
     }
 
     return <div>
         <button type="button" onClick={ dec }>-</button>
-        <span>{current}</span>
+        <input type="text" value={current} onChange={ currentChange }/>
         <button type="button" onClick={ inc }>+</button>
     </div>
 }

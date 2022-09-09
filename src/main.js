@@ -9,6 +9,6 @@ root.render(
     <div>
         <div>Hello, world</div>
         <UserCard name="John" text="Hi, there!"/>
-        <Counter min={-5} max={5}/>
+        <Counter min={2} max={5}/>
     </div>
 );
