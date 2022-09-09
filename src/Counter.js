@@ -1,6 +1,7 @@
 import React, {useState} from "react";
+import PropTypes from "prop-types";
 
-export default function({ max }) {
+function Counter({ min, max }) {
     let [current, setCurrent] = useState(1);
 
     function inc() {
@@ -9,9 +10,23 @@ export default function({ max }) {
         }
     }
 
+    function dec() {
+        if (current > min) {
+            setCurrent(current - 1);
+        }
+    }
+
     return <div>
+        <button type="button" onClick={ dec }>-</button>
         <span>{current}</span>
         <button type="button" onClick={ inc }>+</button>
     </div>
 }
+
+Counter.propTypes = {
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
+}
+
+export default Counter
 
