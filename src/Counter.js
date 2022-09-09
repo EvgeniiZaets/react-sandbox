@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 function Counter ({ min, max }) {
@@ -24,6 +24,12 @@ function Counter ({ min, max }) {
     const num = parseInt(e.target.value);
     applyCurrent(isNaN(num) ? min : num);
   }
+
+  // make action at the moment of changing values of min/max props
+  // (fix issue when prop "current" is not updated after parent component changes min/max props)
+  useEffect(() => {
+    applyCurrent(current);
+  }, [min, max]);
 
   return <div>
         <button type="button" onClick={ dec }>-</button>

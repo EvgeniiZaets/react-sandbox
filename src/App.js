@@ -8,7 +8,6 @@ export default function App () {
   return <div>
         <Counter min={2} max={maxTest}/>
         <hr/>
-        {/* Проблема. Если Counter.state.current будет > 5, то нажатие на эту кнопку не обновит current до 5 */}
         <button type="button" onClick={setMaxTest5}>set max 5</button>
     </div>;
 }
