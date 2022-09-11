@@ -24,6 +24,12 @@ export default function App () {
     );
   };
 
+  const removeProduct = id => {
+    setProducts(
+      products.filter(product => product.id !== id)
+    );
+  };
+
   return <div>
     <h1>Products List</h1>
     <table>
@@ -34,6 +40,7 @@ export default function App () {
           <th>Price</th>
           <th>Cnt</th>
           <th>Total</th>
+          <th>Action</th>
         </tr>
         { products.map((product, i) => (
           <tr key={ product.id }>
@@ -44,6 +51,7 @@ export default function App () {
               <MinMax current={ product.cnt } max={ product.rest } onChange={ cnt => setCnt(product.id, cnt) }/>
             </td>
             <td>{ productTotal(product) }</td>
+            <td><button type="button" onClick={ () => removeProduct(product.id) }>x</button></td>
           </tr>
         )) }
       </tbody>
