@@ -43,12 +43,20 @@ export default function App () {
             <td>
               <MinMax current={ product.cnt } max={ product.rest } onChange={ cnt => setCnt(product.id, cnt) }/>
             </td>
-            <td></td>
+            <td>{ productTotal(product) }</td>
           </tr>
         )) }
       </tbody>
     </table>
+    <div>
+      <b>Total: </b>
+      { products.reduce((acc, product) => acc + productTotal(product), 0) }
+    </div>
   </div>;
+}
+
+function productTotal (product) {
+  return product.price * product.cnt;
 }
 
 function productsStub () {
