@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MinMax from './MinMax';
+import MinMax from './MinMaxLazy';
 
 export default function App () {
   const [products, setProducts] = useState(productsStub());
