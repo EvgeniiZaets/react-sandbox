@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import MinMax from './MinMaxLazy';
 import ProductCard from './ProductCard';
+import useWindowSize from './hooks/useWindowSize';
 
 export default function App () {
   const [products, setProducts] = useState(productsStub());
+  const { width } = useWindowSize();
 
   const setCnt = (id, cnt) => {
     // массив products иммутабелен. если его изменим, то список не перерендерится. поэтому создаем новый массив newProducts
@@ -63,6 +65,9 @@ export default function App () {
     </div>
     <hr/>
     <ProductCard/>
+    <footer>
+       { width }
+    </footer>
   </div>;
 }
 
