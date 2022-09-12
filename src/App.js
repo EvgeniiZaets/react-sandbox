@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MinMax from './MinMaxLazy';
+import ProductCard from './ProductCard';
 
 export default function App () {
   const [products, setProducts] = useState(productsStub());
@@ -60,6 +61,8 @@ export default function App () {
       <b>Total: </b>
       { products.reduce((acc, product) => acc + productTotal(product), 0) }
     </div>
+    <hr/>
+    <ProductCard/>
   </div>;
 }
 
