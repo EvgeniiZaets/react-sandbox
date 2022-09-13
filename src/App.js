@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import MinMax from './MinMaxLazy';
 import ProductCard from './ProductCard';
 import useWindowSize from './hooks/useWindowSize';
+import Modal from './Modal';
 
 export default function App () {
   const [products, setProducts] = useState(productsStub());
@@ -68,6 +69,7 @@ export default function App () {
     <footer>
        { width }
     </footer>
+    <Modal/>
   </div>;
 }
 
