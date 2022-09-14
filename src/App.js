@@ -36,8 +36,14 @@ export default function App () {
 
   return <div>
     <h1>Products List</h1>
-    <table>
-      <tbody>
+    <hr/>
+    <ProductCard/>
+    <footer>
+       { width }
+    </footer>
+    <Modal>
+      <table>
+        <tbody>
         <tr>
           <th>#</th>
           <th>Title</th>
@@ -58,18 +64,13 @@ export default function App () {
             <td><button type="button" onClick={ () => removeProduct(product.id) }>x</button></td>
           </tr>
         )) }
-      </tbody>
-    </table>
-    <div>
-      <b>Total: </b>
-      { products.reduce((acc, product) => acc + productTotal(product), 0) }
-    </div>
-    <hr/>
-    <ProductCard/>
-    <footer>
-       { width }
-    </footer>
-    <Modal/>
+        </tbody>
+      </table>
+      <div>
+        <b>Total: </b>
+        { products.reduce((acc, product) => acc + productTotal(product), 0) }
+      </div>
+    </Modal>
   </div>;
 }
 
