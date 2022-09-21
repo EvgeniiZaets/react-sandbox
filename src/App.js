@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 
 import Home from './views/Home';
@@ -7,8 +7,12 @@ import Cart from './views/Cart';
 import Order from './views/Order';
 import Result from './views/Result';
 import E404 from './views/E404';
+import { observer } from 'mobx-react-lite';
+import useStore from './hooks/useStore';
 
-export default function () {
+const App = observer(() => {
+  const [cart] = useStore('cart');
+
   return <>
 		<header>
 			<div className="container mt-1">
@@ -17,7 +21,10 @@ export default function () {
 						Logo
 					</div>
 					<div className="col">
-						In cart: 0
+						In cart: { cart.items.length }
+					</div>
+					<div className="col">
+						Total: { cart.total }
 					</div>
 				</div>
 				<hr/>
@@ -52,4 +59,6 @@ export default function () {
 			<div className="container">2022</div>
 		</footer>
 	</>;
-}
+});
+
+export default App;

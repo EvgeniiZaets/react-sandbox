@@ -7,6 +7,10 @@ export default class Products {
     makeAutoObservable(this);
     this.rootStore = rootStore;
   }
+
+  get product () {
+    return id => this.products.find(product => product.id === parseInt(id));
+  }
 }
 
 function productsStub () {

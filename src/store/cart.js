@@ -7,12 +7,13 @@ export default class Cart {
   ];
 
   get total () {
-    return 0;
-    /* return this.products.reduce((sum, pr) => sum + pr.price * pr.cnt, 0); */
+    return this.items.reduce((sum, pr) => {
+      return sum + this.rootStore.products.product(pr.id).price * pr.cnt;
+    }, 0);
   }
 
   inCart (id) {
-    return this.items.some(item => item.id == id);
+    return this.items.some(item => item.id === parseInt(id));
   }
 
   change = (id, cnt) => {
