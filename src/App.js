@@ -21,7 +21,7 @@ const App = observer(() => {
 						Logo
 					</div>
 					<div className="col">
-						In cart: { cart.items.length }
+						In cart: { cart.cnt }
 					</div>
 					<div className="col">
 						Total: { cart.total }

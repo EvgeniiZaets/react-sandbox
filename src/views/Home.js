@@ -11,6 +11,14 @@ function Home () {
   const [productsStore, cartStore] = useStore('products', 'cart');
   const { products } = productsStore;
 
+  const actionBtn = (id) => {
+    if (cartStore.inCart(id)) {
+      return <button type="button" className="btn btn-info" onClick={ () => cartStore.remove(id) }>Rm from cart</button>;
+    } else {
+      return <button type="button" className="btn btn-success" onClick={ () => cartStore.add(id) }>Add to cart</button>;
+    }
+  };
+
   return <div>
 		<h1>Catalog</h1>
 		<hr/>
@@ -22,7 +30,13 @@ function Home () {
 						<h3>{ pr.title }</h3>
 						<div>{ pr.price }</div>
 						<Link to={`/product/${pr.id}`}>Read more</Link>
-						{ cartStore.inCart(pr.id) ? 1 : 0 }
+						{ cartStore.inCart(pr.id) &&
+							<div>
+								<button type="button" className="btn btn-secondary" onClick={() => cartStore.increaseCnt(pr.id) }>+</button>
+                <button type="button" className="btn btn-secondary" onClick={() => cartStore.decreaseCnt(pr.id) }>-</button>
+							</div>
+						}
+						{ actionBtn(pr.id) }
 					</div>
 				</div>
 			</div>

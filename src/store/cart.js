@@ -2,9 +2,13 @@ import { makeAutoObservable } from 'mobx';
 
 export default class Cart {
   items = [
-    { id: 100, cnt: 3 },
-    { id: 101, cnt: 1 }
+    // { id: 100, cnt: 3 },
+    // { id: 101, cnt: 1 }
   ];
+
+  get cnt () {
+    return this.items.reduce((sum, pr) => sum + pr.cnt, 0);
+  }
 
   get total () {
     return this.items.reduce((sum, pr) => {
@@ -17,15 +21,36 @@ export default class Cart {
   }
 
   change = (id, cnt) => {
-    /* let product = this.products.find(pr => pr.id == id);
+  //   const item = this.items.find(pr => pr.id === parseInt(id));
+  //
+  //   if (item !== undefined) {
+  //     item.cnt = Math.max(1, Math.min(this.rootStore.products.product(id).rest, cnt));
+  //   }
+  };
 
-		if(product !== undefined){
-			product.cnt = Math.max(1, Math.min(product.rest, cnt));
-		} */
+  increaseCnt = (id) => {
+    const item = this.items.find(pr => pr.id === parseInt(id));
+
+    if (item !== undefined) {
+      item.cnt = Math.max(1, Math.min(this.rootStore.products.product(id).rest, item.cnt + 1));
+    }
+  };
+
+  decreaseCnt = (id) => {
+    const item = this.items.find(pr => pr.id === parseInt(id));
+
+    if (item !== undefined) {
+      item.cnt = Math.max(1, Math.min(this.rootStore.products.product(id).rest, item.cnt - 1));
+    }
+  };
+
+  add = (id) => {
+    // const product = this.items.find(pr => pr.id === parseInt(id));
+    this.items.push({ id, cnt: 1 });
   };
 
   remove = (id) => {
-    /* this.products = this.products.filter(pr => pr.id !== id); */
+    this.items = this.items.filter(pr => pr.id !== id);
   };
 
   constructor (rootStore) {
