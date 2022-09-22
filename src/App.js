@@ -7,12 +7,9 @@ import Cart from './views/Cart';
 import Order from './views/Order';
 import Result from './views/Result';
 import E404 from './views/E404';
-import { observer } from 'mobx-react-lite';
-import useStore from './hooks/useStore';
+import CartCounters from './components/CartCounters';
 
-const App = observer(() => {
-  const [cart] = useStore('cart');
-
+const App = () => {
   return <>
 		<header>
 			<div className="container mt-1">
@@ -20,12 +17,7 @@ const App = observer(() => {
 					<div className="col">
 						Logo
 					</div>
-					<div className="col">
-						In cart: { cart.cnt }
-					</div>
-					<div className="col">
-						Total: { cart.total }
-					</div>
+					<CartCounters/>
 				</div>
 				<hr/>
 			</div>
@@ -59,6 +51,6 @@ const App = observer(() => {
 			<div className="container">2022</div>
 		</footer>
 	</>;
-});
+};
 
 export default App;
