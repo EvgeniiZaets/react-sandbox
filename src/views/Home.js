@@ -30,12 +30,6 @@ function Home () {
 						<h3>{ pr.title }</h3>
 						<div>{ pr.price }</div>
 						<Link to={`/product/${pr.id}`}>Read more</Link>
-						{ cartStore.inCart(pr.id) &&
-							<div>
-								<button type="button" className="btn btn-secondary" onClick={() => cartStore.increaseCnt(pr.id) }>+</button>
-                <button type="button" className="btn btn-secondary" onClick={() => cartStore.decreaseCnt(pr.id) }>-</button>
-							</div>
-						}
 						{ actionBtn(pr.id) }
 					</div>
 				</div>

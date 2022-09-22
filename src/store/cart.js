@@ -6,13 +6,19 @@ export default class Cart {
     // { id: 101, cnt: 1 }
   ];
 
+  get itemsDetailed () {
+    return this.items.map(item => {
+      return { ...item, ...this.rootStore.products.product(item.id) };
+    });
+  }
+
   get cnt () {
     return this.items.reduce((sum, pr) => sum + pr.cnt, 0);
   }
 
   get total () {
-    return this.items.reduce((sum, pr) => {
-      return sum + this.rootStore.products.product(pr.id).price * pr.cnt;
+    return this.itemsDetailed.reduce((sum, pr) => {
+      return sum + pr.price * pr.cnt;
     }, 0);
   }
 
@@ -21,26 +27,11 @@ export default class Cart {
   }
 
   change = (id, cnt) => {
-  //   const item = this.items.find(pr => pr.id === parseInt(id));
-  //
-  //   if (item !== undefined) {
-  //     item.cnt = Math.max(1, Math.min(this.rootStore.products.product(id).rest, cnt));
-  //   }
-  };
-
-  increaseCnt = (id) => {
-    const item = this.items.find(pr => pr.id === parseInt(id));
+    const item = this.items.find(item => item.id === parseInt(id));
 
     if (item !== undefined) {
-      item.cnt = Math.max(1, Math.min(this.rootStore.products.product(id).rest, item.cnt + 1));
-    }
-  };
-
-  decreaseCnt = (id) => {
-    const item = this.items.find(pr => pr.id === parseInt(id));
-
-    if (item !== undefined) {
-      item.cnt = Math.max(1, Math.min(this.rootStore.products.product(id).rest, item.cnt - 1));
+      const itemDetailed = this.itemsDetailed.find(item => item.id);
+      item.cnt = Math.max(1, Math.min(itemDetailed.rest, cnt));
     }
   };
 

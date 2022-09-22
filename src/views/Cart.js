@@ -9,9 +9,8 @@ import { Link } from 'react-router-dom';
 export default observer(Cart);
 
 function Cart () {
-  console.log('cart');
-  const [cart] = useStore('cart');
-  const { products, total, remove, change } = cart;
+  const [cartStore] = useStore('cart');
+  const { itemsDetailed: products, total, remove, change } = cartStore;
 
   return <div>
 		<h1>Cart</h1>

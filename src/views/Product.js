@@ -4,16 +4,31 @@ import useStore from '../hooks/useStore';
 import { observer } from 'mobx-react-lite';
 
 import { Link, useParams } from 'react-router-dom';
+import E404 from './E404';
+
 export default observer(Product);
 
 function Product () {
-  const params = useParams();
-  console.log(params);
-  // params.id -> store.products get by id
+  const { id } = useParams();
+  const [productsStore, cartStore] = useStore('products', 'cart');
+  const product = productsStore.product(id);
 
-  return <div>
-		<h1>1</h1>
-		<hr/>
+  if (!/^[1-9]+\d*$/.test(id) || product === undefined) {
+    return <E404 />;
+  }
 
-	</div>;
+  return <>
+    <h1>{ product.title }</h1>
+    <hr/>
+    <div>
+      <strong>Price: { product.price }</strong>
+    </div>
+    <hr/>
+    <Link to="/">Back to catalog</Link>
+    <hr/>
+    { cartStore.inCart(product.id)
+      ? <button onClick={() => cartStore.remove(product.id)} type="button" className="btn btn-danger">Remove item</button>
+      : <button onClick={() => cartStore.add(product.id)} type="button" className="btn btn-success">Add to cart</button>
+    }
+  </>;
 }
