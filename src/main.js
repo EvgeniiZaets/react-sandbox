@@ -11,12 +11,14 @@ import StoreContext from './contexts/store';
 import RootStore from './store';
 
 const store = new RootStore();
-
-const root = ReactDom.createRoot(document.querySelector('.app'));
-root.render(
-	<BrowserRouter>
-		<StoreContext.Provider value={store}>
-			<App/>
-		</StoreContext.Provider>
-	</BrowserRouter>
-);
+store.products.load();
+store.cart.load().then(() => {
+  const root = ReactDom.createRoot(document.querySelector('.app'));
+  root.render(
+			<BrowserRouter>
+				<StoreContext.Provider value={store}>
+					<App/>
+				</StoreContext.Provider>
+			</BrowserRouter>
+  );
+});

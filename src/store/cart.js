@@ -1,10 +1,16 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
+
+// tmp
+const BASEURL = 'http://faceprog.ru/reactcourseapi/cart/';
 
 export default class Cart {
   items = [
     // { id: 100, cnt: 3 },
     // { id: 101, cnt: 1 }
   ];
+
+  // private field
+  #token = null;
 
   get itemsDetailed () {
     return this.items.map(item => {
@@ -26,23 +32,60 @@ export default class Cart {
     return this.items.some(item => item.id === parseInt(id));
   }
 
-  change = (id, cnt) => {
+  change = async (id, cnt) => {
     const item = this.items.find(item => item.id === parseInt(id));
 
     if (item !== undefined) {
       const itemDetailed = this.itemsDetailed.find(item => item.id);
-      item.cnt = Math.max(1, Math.min(itemDetailed.rest, cnt));
+      const realCnt = Math.max(1, Math.min(itemDetailed.rest, cnt));
+      if (realCnt !== parseInt(item.cnt)) {
+        const response = await fetch(`${BASEURL}change.php?token=${this.#token}&id=${item.id}&cnt=${realCnt}`);
+        const res = await response.json();
+
+        if (res) {
+          item.cnt = realCnt;
+        }
+      }
     }
   };
 
-  add = (id) => {
-    // const product = this.items.find(pr => pr.id === parseInt(id));
-    this.items.push({ id, cnt: 1 });
+  add = async (id) => {
+    if (!this.inCart(id)) {
+      const response = await fetch(`${BASEURL}add.php?token=${this.#token}&id=${id}`);
+      const res = await response.json();
+
+      if (res) {
+        this.items.push({ id, cnt: 1 });
+      }
+    }
   };
 
-  remove = (id) => {
-    this.items = this.items.filter(pr => pr.id !== id);
+  remove = async (id) => {
+    if (this.inCart(id)) {
+      const response = await fetch(`${BASEURL}remove.php?token=${this.#token}&id=${id}`);
+      const res = await response.json();
+
+      if (res) {
+        this.items = this.items.filter(pr => pr.id !== id);
+      }
+    }
   };
+
+  async load () {
+    const currentToken = this.rootStore.storage.getItem('CART__TOKEN');
+    // fetch('http://faceprog.ru/reactcourseapi/products/all.php');
+    const response = await fetch(`${BASEURL}load.php?token=${currentToken}`);
+    const { cart, token, needUpdate } = await response.json();
+
+    if (needUpdate) {
+      this.rootStore.storage.setItem('CART__TOKEN', token);
+    }
+
+    runInAction(() => {
+      this.items = cart;
+      this.#token = token;
+    });
+  }
 
   constructor (rootStore) {
     makeAutoObservable(this);
