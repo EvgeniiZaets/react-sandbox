@@ -31,12 +31,12 @@ function Cart () {
 						<td>{ pr.title }</td>
 						<td>{ pr.price }</td>
 						<td>
-							<MinMax min={1} max={pr.rest} current={pr.cnt} onChange={cnt => change(pr.id, cnt)} />
+							<MinMax min={1} max={pr.rest} current={pr.cnt} isDisabled={ cartStore.inProcess(pr.id) } onChange={cnt => change(pr.id, cnt)} />
 						</td>
 						<td>{ pr.price * pr.cnt }</td>
 						<td>
-							<button type="button" onClick={() => remove(pr.id)}>X</button>
-							<button type="button" onClick={() => change(pr.id, pr.rest)}>MAX</button>
+							<button type="button" onClick={() => remove(pr.id)} disabled={ cartStore.inProcess(pr.id) }>X</button>
+							<button type="button" onClick={() => change(pr.id, pr.rest)} disabled={ cartStore.inProcess(pr.id) }>MAX</button>
 						</td>
 					</tr>
 				)) }

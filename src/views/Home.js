@@ -13,9 +13,9 @@ function Home () {
 
   const actionBtn = (id) => {
     if (cartStore.inCart(id)) {
-      return <button type="button" className="btn btn-info" onClick={ () => cartStore.remove(id) }>Rm from cart</button>;
+      return <button type="button" className="btn btn-info" onClick={ () => cartStore.remove(id) } disabled={ cartStore.inProcess(id) }>Rm from cart</button>;
     } else {
-      return <button type="button" className="btn btn-success" onClick={ () => cartStore.add(id) }>Add to cart</button>;
+      return <button type="button" className="btn btn-success" onClick={ () => cartStore.add(id) } disabled={ cartStore.inProcess(id) }>Add to cart</button>;
     }
   };
 

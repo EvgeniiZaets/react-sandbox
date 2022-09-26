@@ -9,6 +9,8 @@ export default class Cart {
     // { id: 101, cnt: 1 }
   ];
 
+  itemsInProcess = [];
+
   // private field
   #token = null;
 
@@ -32,41 +34,81 @@ export default class Cart {
     return this.items.some(item => item.id === parseInt(id));
   }
 
+  inProcess (id) {
+    return this.itemsInProcess.includes(id);
+  }
+
+  addToProcess (id) {
+    if (!this.inProcess(id)) {
+      this.itemsInProcess.push(id);
+    }
+  }
+
+  removeFromProcess (id) {
+    this.itemsInProcess = this.itemsInProcess.filter((itemId) => itemId !== id);
+  }
+
   change = async (id, cnt) => {
     const item = this.items.find(item => item.id === parseInt(id));
 
-    if (item !== undefined) {
+    if (item !== undefined && !this.inProcess(id)) {
+      // use runInAction after async code only
+      // runInAction(() => {
+      this.addToProcess(id);
+      // });
+
       const itemDetailed = this.itemsDetailed.find(item => item.id);
       const realCnt = Math.max(1, Math.min(itemDetailed.rest, cnt));
-      if (realCnt !== parseInt(item.cnt)) {
-        const response = await fetch(`${BASEURL}change.php?token=${this.#token}&id=${item.id}&cnt=${realCnt}`);
-        const res = await response.json();
+      if (realCnt === parseInt(item.cnt)) {
+        runInAction(() => {
+          this.removeFromProcess(id);
+        });
+        return;
+      }
 
+      const response = await fetch(`${BASEURL}change.php?token=${this.#token}&id=${item.id}&cnt=${realCnt}`);
+      const res = await response.json();
+
+      runInAction(() => {
         if (res) {
           item.cnt = realCnt;
         }
-      }
+
+        this.removeFromProcess(id);
+      });
     }
   };
 
   add = async (id) => {
-    if (!this.inCart(id)) {
+    if (!this.inCart(id) && !this.inProcess(id)) {
+      this.addToProcess(id);
+
       const response = await fetch(`${BASEURL}add.php?token=${this.#token}&id=${id}`);
       const res = await response.json();
 
-      if (res) {
-        this.items.push({ id, cnt: 1 });
-      }
+      runInAction(() => {
+        if (res) {
+          this.items.push({ id, cnt: 1 });
+        }
+
+        this.removeFromProcess(id);
+      });
     }
   };
 
   remove = async (id) => {
-    if (this.inCart(id)) {
+    if (this.inCart(id) && !this.inProcess(id)) {
+      this.addToProcess(id);
+
       const response = await fetch(`${BASEURL}remove.php?token=${this.#token}&id=${id}`);
       const res = await response.json();
 
       if (res) {
-        this.items = this.items.filter(pr => pr.id !== id);
+        runInAction(() => {
+          this.items = this.items.filter(pr => pr.id !== id);
+
+          this.removeFromProcess(id);
+        });
       }
     }
   };

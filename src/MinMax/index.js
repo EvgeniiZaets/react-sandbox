@@ -1,11 +1,11 @@
-import React, { useRef, useEffect, useContext } from 'react';
+import React, { useRef, useEffect } from 'react';
 import propTypes from './props';
 
 import style from './style.module.scss';
 
 MinMaxLazy.propTypes = propTypes;
 
-function MinMaxLazy ({ min = 1, max, current, onChange }) {
+function MinMaxLazy ({ min = 1, max, current, isDisabled, onChange }) {
   const inp = useRef();
 
   function onKeyPress (e) {
@@ -33,7 +33,7 @@ function MinMaxLazy ({ min = 1, max, current, onChange }) {
   }, [current]);
 
   return <div>
-		<button className="btn btn-warning" type="button" onClick={ dec }>-</button>
+		<button className="btn btn-warning" type="button" onClick={ dec } disabled={ isDisabled }>-</button>
 		<input
 			ref={inp}
 			type="text"
@@ -42,7 +42,7 @@ function MinMaxLazy ({ min = 1, max, current, onChange }) {
 			onBlur={parseCurrentStr}
 			onKeyPress={onKeyPress}
 		/>
-		<button className="btn btn-success" type="button" onClick={ inc }>+</button>
+		<button className="btn btn-success" type="button" onClick={ inc } disabled={ isDisabled }>+</button>
 	</div>;
 }
 
